@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Vitor\\\\Documents\\\\Projects\\\\pet-com-voce\" -Force)",
+      "Bash(Select-Object Name, FullName)"
+    ]
+  }
+}
