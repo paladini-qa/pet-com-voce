@@ -1,0 +1,45 @@
+### ============================================================
+### UC05 - Realizar Check-in do Atendimento
+### PATCH /appointments/:id/status
+###
+### Pré-requisito: execute o seed em docs/seeds/uc05-checkin.sql
+### ============================================================
+
+@baseUrl = http://localhost:3000
+
+
+### ---------------------------------------------------------------
+### [SUCESSO 200] Check-in realizado com sucesso
+### Agendamento CONFIRMADO + orçamento APROVADO → vira EM_ANDAMENTO
+### ---------------------------------------------------------------
+PATCH {{baseUrl}}/appointments/dddddddd-0000-0000-0000-000000000004/status
+
+
+### ---------------------------------------------------------------
+### [ERRO 404] Agendamento inexistente
+### ID inválido → NotFoundException
+### ---------------------------------------------------------------
+PATCH {{baseUrl}}/appointments/00000000-dead-beef-0000-000000000000/status
+
+
+### ---------------------------------------------------------------
+### [ERRO 422] Orçamento não aprovado (fere RN02)
+### Agendamento com orçamento PENDENTE → UnprocessableEntityException
+### ---------------------------------------------------------------
+PATCH {{baseUrl}}/appointments/ffffffff-0000-0000-0000-000000000006/status
+
+
+### ---------------------------------------------------------------
+### [ERRO 409] Status incompatível - agendamento CANCELADO
+### Status terminal → ConflictException
+### ---------------------------------------------------------------
+PATCH {{baseUrl}}/appointments/b0000000-0000-0000-0000-000000000008/status
+
+
+### ---------------------------------------------------------------
+### [ERRO 409] Status incompatível - agendamento já EM_ANDAMENTO
+### Execute esta request DUAS VEZES seguidas:
+### - 1ª chamada: retorna 200 (check-in realizado)
+### - 2ª chamada: retorna 409 (já está EM_ANDAMENTO)
+### ---------------------------------------------------------------
+PATCH {{baseUrl}}/appointments/dddddddd-0000-0000-0000-000000000004/status
